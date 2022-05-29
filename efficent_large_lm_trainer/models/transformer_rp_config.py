@@ -102,6 +102,7 @@ class TransformerRpConfig(FairseqDataclass):
             "alias": "--relu-dropout",
         },
     )
+    adaptive_input: bool = False
     encoder: EncDecBaseConfig = EncDecBaseConfig()
     # TODO should really be in the encoder config
     max_source_positions: int = field(
@@ -129,8 +130,33 @@ class TransformerRpConfig(FairseqDataclass):
             "help": "if True, disables positional embeddings (outside self attention)"
         },
     )
+    adaptive_softmax_cutoff: Optional[List[int]] = field(
+        default=None,
+        metadata={
+            "help": "list of adaptive softmax cutoff points. Must be used with adaptive_loss criterion"
+        },
+    )
+    adaptive_softmax_dropout: float = field(
+        default=0.0,
+        metadata={"help": "sets adaptive softmax dropout for the tail projections"},
+    )
+    adaptive_softmax_factor: float = field(
+        default=4, metadata={"help": "adaptive input factor"}
+    )
     layernorm_embedding: bool = field(
         default=False, metadata={"help": "add layernorm to embedding"}
+    )
+    tie_adaptive_weights: bool = field(
+        default=False,
+        metadata={
+            "help": "if set, ties the weights of adaptive softmax and adaptive input"
+        },
+    )
+    tie_adaptive_proj: bool = field(
+        default=False,
+        metadata={
+            "help": "if set, ties the projection weights of adaptive softmax and adaptive input"
+        },
     )
     no_scale_embedding: bool = field(
         default=False, metadata={"help": "if True, dont scale embeddings"}
@@ -160,11 +186,11 @@ class TransformerRpConfig(FairseqDataclass):
         default=DEFAULT_MIN_PARAMS_TO_WRAP,
         metadata={
             "help": "minimum number of params for a layer to be wrapped with FSDP() when "
-                    "training with --ddp-backend=fully_sharded. Smaller values will "
-                    "improve memory efficiency, but may make torch.distributed "
-                    "communication less efficient due to smaller input sizes. This option "
-                    "is set to 0 (i.e., always wrap) when --checkpoint-activations or "
-                    "--offload-activations are passed."
+            "training with --ddp-backend=fully_sharded. Smaller values will "
+            "improve memory efficiency, but may make torch.distributed "
+            "communication less efficient due to smaller input sizes. This option "
+            "is set to 0 (i.e., always wrap) when --checkpoint-activations or "
+            "--offload-activations are passed."
         },
     )
     # DEPRECATED field, but some old checkpoints might have it
