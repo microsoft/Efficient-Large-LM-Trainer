@@ -2,12 +2,12 @@ from fairseq.distributed import fsdp_wrap
 from fairseq.models.transformer import TransformerDecoderBase
 from fairseq.modules.checkpoint_activations import checkpoint_wrapper
 
-from .transformer_layer_rp import TransformerDecoderLayerRp
+from .transformer_layer_rp import TransformerDecoderLayerRpBase
 
 
 class TransformerDecoderRpBase(TransformerDecoderBase):
     def build_decoder_layer(self, cfg, no_encoder_attn=False):
-        layer = TransformerDecoderLayerRp(cfg, no_encoder_attn)
+        layer = TransformerDecoderLayerRpBase(cfg, no_encoder_attn)
         checkpoint = cfg.checkpoint_activations
         if checkpoint:
             offload_to_cpu = cfg.offload_activations
