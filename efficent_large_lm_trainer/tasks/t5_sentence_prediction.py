@@ -8,7 +8,6 @@ from omegaconf import MISSING, II
 
 import editdistance
 import numpy as np
-from fairseq import glue_utils
 from fairseq.data import (
     ConcatSentencesDataset,
     Dictionary,
@@ -27,6 +26,7 @@ from fairseq.data.shorten_dataset import maybe_shorten_dataset
 from fairseq.dataclass import ChoiceEnum
 from fairseq.tasks import FairseqDataclass, FairseqTask, register_task
 
+from .. import glue_utils
 from ..data import (
     ConstantDataset,
     PadShiftDataset,
