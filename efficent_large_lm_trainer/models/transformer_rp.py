@@ -301,3 +301,6 @@ def base_architecture(args):
     args.decoder_rel_pos = safe_getattr(args, "decoder_rel_pos", False)
     args.decoder_rp_bins = safe_getattr(args, "decoder_rp_bins", 32)
     args.decoder_rp_max_dist = safe_getattr(args, "decoder_rp_max_dist", 128)
+
+    args.base_layers = safe_getattr(args, "base_layers", 0)
+    args.apply_t5_init = safe_getattr(args, "apply_t5_init", False)
