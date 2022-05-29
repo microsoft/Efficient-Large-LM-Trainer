@@ -9,7 +9,6 @@ from fairseq import utils
 from fairseq.dataclass.utils import gen_parser_from_dataclass
 from fairseq.distributed import fsdp_wrap
 from fairseq.models import FairseqEncoderDecoderModel, register_model, register_model_architecture
-from fairseq.modules import RelativePositionalEmbedding
 from fairseq.utils import safe_getattr
 
 from .transformer_rp_config import (
@@ -18,7 +17,11 @@ from .transformer_rp_config import (
     DEFAULT_MAX_TARGET_POSITIONS,
     DEFAULT_MIN_PARAMS_TO_WRAP,
 )
-from ..modules import TransformerEncoderRpBase, TransformerDecoderRpBase
+from ..modules import (
+    RelativePositionalEmbedding,
+    TransformerEncoderRpBase,
+    TransformerDecoderRpBase,
+)
 
 
 def init_t5_params(module):
