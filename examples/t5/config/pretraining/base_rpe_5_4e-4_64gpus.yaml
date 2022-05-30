@@ -45,4 +45,5 @@ optimization:
 
 model:
   _name: transformer_t5_base_rpe
+  base_layers: 0
   max_positions: 1024
