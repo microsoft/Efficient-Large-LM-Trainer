@@ -3,7 +3,8 @@ from dataclasses import dataclass, field
 from omegaconf import II
 
 from fairseq import metrics, utils
-from fairseq.criterions import FairseqCriterion, LabelSmoothedCrossEntropyCriterion, register_criterion
+from fairseq.criterions import FairseqCriterion, register_criterion
+from fairseq.criterions.label_smoothed_cross_entropy import LabelSmoothedCrossEntropyCriterion
 from fairseq.dataclass import FairseqDataclass
 
 
