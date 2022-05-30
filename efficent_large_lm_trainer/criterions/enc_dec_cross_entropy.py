@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from omegaconf import II
 
 from fairseq import metrics, utils
-from fairseq.criterions import FairseqCriterion, register_criterion
+from fairseq.criterions import FairseqCriterion, LabelSmoothedCrossEntropyCriterion, register_criterion
 from fairseq.dataclass import FairseqDataclass
 
 
@@ -27,7 +27,7 @@ class EncDecCrossEntropyCriterionConfig(FairseqDataclass):
 @register_criterion(
     "enc_dec_cross_entropy", dataclass=EncDecCrossEntropyCriterionConfig
 )
-class EncDecCrossEntropyCriterion(FairseqCriterion):
+class EncDecCrossEntropyCriterion(LabelSmoothedCrossEntropyCriterion):
     """
     Allow to specify `sample_size` in the dataset,
     such that losses are divided by `sample_size` instead of `ntokens`.
