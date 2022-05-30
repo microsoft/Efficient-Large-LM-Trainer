@@ -45,7 +45,7 @@ distributed_training:
   distributed_world_size: 1
 
 criterion:
-  _name: label_smoothed_cross_entropy
+  _name: enc_dec_cross_entropy
 
 dataset:
   batch_size: ???
