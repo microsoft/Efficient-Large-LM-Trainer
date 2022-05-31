@@ -1,7 +1,7 @@
 from fairseq.models import register_model_architecture
 from fairseq.utils import safe_getattr
 
-from .transformer_rp import base_architecture
+from .transformer_rel_pos import base_architecture
 
 
 def transformer_t5_common(args):
@@ -22,7 +22,7 @@ def transformer_t5_common(args):
     return base_architecture(args)
 
 
-@register_model_architecture("transformer_rp", "transformer_t5_base")
+@register_model_architecture("transformer_rel_pos", "transformer_t5_base")
 def transformer_t5_base(args):
     args.encoder_embed_dim = safe_getattr(args, "encoder_embed_dim", 768)
     args.encoder_ffn_embed_dim = safe_getattr(args, "encoder_ffn_embed_dim", 3072)
@@ -37,20 +37,20 @@ def transformer_t5_base(args):
     return transformer_t5_common(args)
 
 
-@register_model_architecture("transformer_rp", "transformer_t5_base_rp")
-def transformer_t5_base_rp(args):
+@register_model_architecture("transformer_rel_pos", "transformer_t5_base_rel_pos")
+def transformer_t5_base_rel_pos(args):
     args.encoder_rel_pos = safe_getattr(args, "encoder_rel_pos", True)
-    args.encoder_rp_bins = safe_getattr(args, "encoder_rp_bins", 32)
-    args.encoder_rp_max_dist = safe_getattr(args, "encoder_rp_max_dist", 128)
+    args.encoder_rel_pos_bins = safe_getattr(args, "encoder_rel_pos_bins", 32)
+    args.encoder_rel_pos_max_dist = safe_getattr(args, "encoder_rel_pos_max_dist", 128)
     args.decoder_rel_pos = safe_getattr(args, "decoder_rel_pos", True)
-    args.decoder_rp_bins = safe_getattr(args, "decoder_rp_bins", 32)
-    args.decoder_rp_max_dist = safe_getattr(args, "decoder_rp_max_dist", 128)
+    args.decoder_rel_pos_bins = safe_getattr(args, "decoder_rel_pos_bins", 32)
+    args.decoder_rel_pos_max_dist = safe_getattr(args, "decoder_rel_pos_max_dist", 128)
     return transformer_t5_base(args)
 
 
-@register_model_architecture("transformer_rp", "transformer_t5_base_rpe")
-def transformer_t5_base_rpe(args):
+@register_model_architecture("transformer_rel_pos", "transformer_t5_base_rel_pos_encoder")
+def transformer_t5_base_rel_pos_encoder(args):
     args.encoder_rel_pos = safe_getattr(args, "encoder_rel_pos", True)
-    args.encoder_rp_bins = safe_getattr(args, "encoder_rp_bins", 32)
-    args.encoder_rp_max_dist = safe_getattr(args, "encoder_rp_max_dist", 128)
+    args.encoder_rel_pos_bins = safe_getattr(args, "encoder_rel_pos_bins", 32)
+    args.encoder_rel_pos_max_dist = safe_getattr(args, "encoder_rel_pos_max_dist", 128)
     return transformer_t5_base(args)

@@ -44,9 +44,9 @@ class EncDecBaseConfig(FairseqDataclass):
         default=None, metadata={"help": "which layers to *keep* when pruning"}
     )
     rel_pos: bool = field(default=False, metadata={"help": "Add relative positional embedding"})
-    rp_bins: int = field(default=32, metadata={"help": "Number of bins for relative positional embedding"})
-    rp_max_dist: int = field(default=128, metadata={"help": "Maximum distance in relative positional embedding"})
-    rp_freeze: bool = field(default=False, metadata={"help": "Freeze relative positional embedding"})
+    rel_pos_bins: int = field(default=32, metadata={"help": "Number of bins for relative positional embedding"})
+    rel_pos_max_dist: int = field(default=128, metadata={"help": "Maximum distance in relative positional embedding"})
+    rel_pos_freeze: bool = field(default=False, metadata={"help": "Freeze relative positional embedding"})
 
 
 @dataclass
@@ -86,7 +86,7 @@ class QuantNoiseConfig(FairseqDataclass):
 
 
 @dataclass
-class TransformerRpConfig(FairseqDataclass):
+class TransformerRelPosConfig(FairseqDataclass):
     activation_fn: ChoiceEnum(utils.get_available_activation_fns()) = field(
         default="relu",
         metadata={"help": "activation function to use"},

@@ -37,18 +37,18 @@ class RelativePositionalEmbedding(nn.Module):
             torch.arange(max_positions, dtype=torch.long)[None, :]
             - torch.arange(max_positions, dtype=torch.long)[:, None]
         )
-        self.rp_bucket = relative_position_bucket(
+        self.rel_pos_bucket = relative_position_bucket(
             relative_position,
             num_buckets=self.bins,
             max_distance=self.max_dist
         )
-        self.rp_bucket -= self.rp_bucket.min()
+        self.rel_pos_bucket -= self.rel_pos_bucket.min()
 
     def forward(self, query_len, key_len, batch_size, attn_mask=None, incremental_inference=False):
-        if self.rp_bucket.device != self.rel_attn_bias.weight.device:
-            self.rp_bucket = self.rp_bucket.to(self.rel_attn_bias.weight.device)
-        rp_bucket = self.rp_bucket[:query_len, :key_len]  # [query_len, key_len]
-        values = self.rel_attn_bias(rp_bucket)  # [query_len, key_len, attn_heads]
+        if self.rel_pos_bucket.device != self.rel_attn_bias.weight.device:
+            self.rel_pos_bucket = self.rel_pos_bucket.to(self.rel_attn_bias.weight.device)
+        rel_pos_bucket = self.rel_pos_bucket[:query_len, :key_len]  # [query_len, key_len]
+        values = self.rel_attn_bias(rel_pos_bucket)  # [query_len, key_len, attn_heads]
         values = values.permute([2, 0, 1]).contiguous()  # [attn_heads, query_len, key_len]
         values = values.repeat(batch_size, 1, 1)  # [attn_heads * batch_size, query_len, key_len]
         if incremental_inference:

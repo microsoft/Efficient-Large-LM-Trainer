@@ -11,16 +11,16 @@ from fairseq.distributed import fsdp_wrap
 from fairseq.models import FairseqEncoderDecoderModel, register_model, register_model_architecture
 from fairseq.utils import safe_getattr
 
-from .transformer_rp_config import (
-    TransformerRpConfig,
+from .transformer_rel_pos_config import (
+    TransformerRelPosConfig,
     DEFAULT_MAX_SOURCE_POSITIONS,
     DEFAULT_MAX_TARGET_POSITIONS,
     DEFAULT_MIN_PARAMS_TO_WRAP,
 )
 from ..modules import (
     RelativePositionalEmbedding,
-    TransformerEncoderRpBase,
-    TransformerDecoderRpBase,
+    TransformerEncoderRelPosBase,
+    TransformerDecoderRelPosBase,
 )
 
 
@@ -46,8 +46,8 @@ def init_t5_params(module):
         module.rel_attn_bias.weight.data.zero_()
 
 
-@register_model("transformer_rp")
-class TransformerRpModel(FairseqEncoderDecoderModel):
+@register_model("transformer_rel_pos")
+class TransformerRelPosModel(FairseqEncoderDecoderModel):
     """
     Transformer model from `"Attention Is All You Need" (Vaswani, et al, 2017)
     <https://arxiv.org/abs/1706.03762>`_.
@@ -62,7 +62,7 @@ class TransformerRpModel(FairseqEncoderDecoderModel):
     """
 
     def __init__(self, args, encoder, decoder):
-        cfg = TransformerRpConfig.from_namespace(args)
+        cfg = TransformerRelPosConfig.from_namespace(args)
         super().__init__(encoder, decoder)
         self.args = args
         self.cfg = cfg
@@ -74,7 +74,7 @@ class TransformerRpModel(FairseqEncoderDecoderModel):
     @classmethod
     def add_args(cls, parser):
         gen_parser_from_dataclass(
-            parser, TransformerRpConfig(), delete_default=True, with_prefix=""
+            parser, TransformerRelPosConfig(), delete_default=True, with_prefix=""
         )
 
     @classmethod
@@ -115,7 +115,7 @@ class TransformerRpModel(FairseqEncoderDecoderModel):
             args.min_params_to_wrap = getattr(
                 args, "min_params_to_wrap", DEFAULT_MIN_PARAMS_TO_WRAP
             )
-        cfg = TransformerRpConfig.from_namespace(args)
+        cfg = TransformerRelPosConfig.from_namespace(args)
 
         cfg.decoder.input_dim = int(cfg.decoder.input_dim)
         cfg.decoder.output_dim = int(cfg.decoder.output_dim)
@@ -165,7 +165,7 @@ class TransformerRpModel(FairseqEncoderDecoderModel):
 
     @classmethod
     def build_embedding(cls, args, dictionary, embed_dim, path=None):
-        cfg = TransformerRpConfig.from_namespace(args)
+        cfg = TransformerRelPosConfig.from_namespace(args)
 
         num_embeddings = len(dictionary)
         padding_idx = dictionary.pad()
@@ -179,13 +179,13 @@ class TransformerRpModel(FairseqEncoderDecoderModel):
 
     @classmethod
     def build_encoder(cls, args, src_dict, embed_tokens):
-        cfg = TransformerRpConfig.from_namespace(args)
-        return TransformerEncoderRpBase(cfg, src_dict, embed_tokens)
+        cfg = TransformerRelPosConfig.from_namespace(args)
+        return TransformerEncoderRelPosBase(cfg, src_dict, embed_tokens)
 
     @classmethod
     def build_decoder(cls, args, tgt_dict, embed_tokens):
-        cfg = TransformerRpConfig.from_namespace(args)
-        return TransformerDecoderRpBase(
+        cfg = TransformerRelPosConfig.from_namespace(args)
+        return TransformerDecoderRelPosBase(
             cfg,
             tgt_dict,
             embed_tokens,
@@ -244,7 +244,7 @@ def Embedding(num_embeddings, embedding_dim, padding_idx):
     return m
 
 
-@register_model_architecture("transformer_rp", "transformer_rp")
+@register_model_architecture("transformer_rel_pos", "transformer_rel_pos")
 def base_architecture(args):
     args.encoder_embed_path = safe_getattr(args, "encoder_embed_path", None)
     args.encoder_embed_dim = safe_getattr(args, "encoder_embed_dim", 512)
@@ -296,11 +296,11 @@ def base_architecture(args):
     args.quant_noise_scalar = safe_getattr(args, "quant_noise_scalar", 0)
 
     args.encoder_rel_pos = safe_getattr(args, "encoder_rel_pos", False)
-    args.encoder_rp_bins = safe_getattr(args, "encoder_rp_bins", 32)
-    args.encoder_rp_max_dist = safe_getattr(args, "encoder_rp_max_dist", 128)
+    args.encoder_rel_pos_bins = safe_getattr(args, "encoder_rel_pos_bins", 32)
+    args.encoder_rel_pos_max_dist = safe_getattr(args, "encoder_rel_pos_max_dist", 128)
     args.decoder_rel_pos = safe_getattr(args, "decoder_rel_pos", False)
-    args.decoder_rp_bins = safe_getattr(args, "decoder_rp_bins", 32)
-    args.decoder_rp_max_dist = safe_getattr(args, "decoder_rp_max_dist", 128)
+    args.decoder_rel_pos_bins = safe_getattr(args, "decoder_rel_pos_bins", 32)
+    args.decoder_rel_pos_max_dist = safe_getattr(args, "decoder_rel_pos_max_dist", 128)
 
     args.base_layers = safe_getattr(args, "base_layers", 0)
     args.apply_t5_init = safe_getattr(args, "apply_t5_init", False)

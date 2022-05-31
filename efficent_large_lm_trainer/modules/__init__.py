@@ -1,9 +1,9 @@
 from .relative_positional_embedding import RelativePositionalEmbedding
-from .transformer_decoder_rp_base import TransformerDecoderRpBase
-from .transformer_encoder_rp_base import TransformerEncoderRpBase
+from .transformer_decoder_rel_pos_base import TransformerDecoderRelPosBase
+from .transformer_encoder_rel_pos_base import TransformerEncoderRelPosBase
 
 __all__ = [
     "RelativePositionalEmbedding",
-    "TransformerEncoderRpBase",
-    "TransformerDecoderRpBase",
+    "TransformerEncoderRelPosBase",
+    "TransformerDecoderRelPosBase",
 ]

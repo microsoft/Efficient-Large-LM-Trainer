@@ -45,5 +45,5 @@ optimization:
   update_freq: [2]  # Assuming 64 GPUs
 
 model:
-  _name: transformer_t5_base_rpe
+  _name: transformer_t5_base_rel_pos_encoder
   max_positions: 1024

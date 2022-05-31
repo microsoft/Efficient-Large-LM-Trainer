@@ -2,12 +2,12 @@ from fairseq.distributed import fsdp_wrap
 from fairseq.models.transformer import TransformerEncoderBase
 from fairseq.modules.checkpoint_activations import checkpoint_wrapper
 
-from .transformer_layer_rp import TransformerEncoderLayerRpBase
+from .transformer_layer_rel_pos import TransformerEncoderLayerRelPosBase
 
 
-class TransformerEncoderRpBase(TransformerEncoderBase):
+class TransformerEncoderRelPosBase(TransformerEncoderBase):
     def build_encoder_layer(self, cfg):
-        layer = TransformerEncoderLayerRpBase(
+        layer = TransformerEncoderLayerRelPosBase(
             cfg, return_fc=self.return_fc
         )
         checkpoint = cfg.checkpoint_activations

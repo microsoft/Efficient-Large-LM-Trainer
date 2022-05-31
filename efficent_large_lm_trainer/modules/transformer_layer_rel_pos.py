@@ -8,17 +8,17 @@ from fairseq.modules.transformer_layer import TransformerEncoderLayerBase, Trans
 from .relative_positional_embedding import RelativePositionalEmbedding
 
 
-class TransformerEncoderLayerRpBase(TransformerEncoderLayerBase):
+class TransformerEncoderLayerRelPosBase(TransformerEncoderLayerBase):
     def __init__(self, cfg, return_fc=False):
         super().__init__(cfg, return_fc)
         if cfg.encoder.rel_pos:
             self.self_attn_rel_pos = RelativePositionalEmbedding(
-                bins=cfg.encoder.rp_bins,
-                max_dist=cfg.encoder.rp_max_dist,
+                bins=cfg.encoder.rel_pos_bins,
+                max_dist=cfg.encoder.rel_pos_max_dist,
                 attention_heads=cfg.encoder.attention_heads,
                 max_positions=cfg.max_source_positions
             )
-            if cfg.encoder.rp_freeze:
+            if cfg.encoder.rel_pos_freeze:
                 self.self_attn_rel_pos.rel_attn_bias.weight.requires_grad = False
         else:
             self.self_attn_rel_pos = None
@@ -90,19 +90,19 @@ class TransformerEncoderLayerRpBase(TransformerEncoderLayerBase):
         return x
 
 
-class TransformerDecoderLayerRpBase(TransformerDecoderLayerBase):
+class TransformerDecoderLayerRelPosBase(TransformerDecoderLayerBase):
     def __init__(
         self, cfg, no_encoder_attn=False, add_bias_kv=False, add_zero_attn=False
     ):
         super().__init__(cfg, no_encoder_attn, add_bias_kv, add_zero_attn)
         if cfg.decoder.rel_pos:
             self.self_attn_rel_pos = RelativePositionalEmbedding(
-                bins=cfg.decoder.rp_bins,
-                max_dist=cfg.decoder.rp_max_dist,
+                bins=cfg.decoder.rel_pos_bins,
+                max_dist=cfg.decoder.rel_pos_max_dist,
                 attention_heads=cfg.decoder.attention_heads,
                 max_positions=cfg.max_target_positions
             )
-            if cfg.decoder.rp_freeze:
+            if cfg.decoder.rel_pos_freeze:
                 self.self_attn_rel_pos.rel_attn_bias.weight.requires_grad = False
         else:
             self.self_attn_rel_pos = None
