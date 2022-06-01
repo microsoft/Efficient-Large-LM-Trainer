@@ -1,3 +1,8 @@
+# Copyright (c) Microsoft. All rights reserved.
+#
+# This source code is licensed under the MIT license found in the
+# LICENSE file in the root directory of this source tree.
+
 from .constant_dataset import ConstantDataset
 from .pad_shift_dataset import PadShiftDataset
 from .t5_dataset import T5Dataset
