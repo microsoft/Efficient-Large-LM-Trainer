@@ -1,0 +1,49 @@
+# @package _group_
+common:
+  fp16: true
+  log_format: json
+  log_interval: 200
+  use_plasma_view: false
+  tensorboard_logdir: tb
+
+checkpoint:
+  no_epoch_checkpoints: true
+  save_interval_updates: 125000
+
+task:
+  _name: t5
+  data: ???
+  sample_break_mode: complete_doc
+  tokens_per_sample: 512
+  mask_multiple_length: 5
+  shorten_method: random_crop
+  shorten_data_split_list: train
+
+criterion:
+  _name: enc_dec_cross_entropy
+  report_accuracy: true
+
+dataset:
+  max_tokens: 8192
+  ignore_unused_valid_subsets: true
+  skip_invalid_size_inputs_valid_test: true
+
+optimizer:
+  _name: adam
+  weight_decay: 0.01
+  adam_betas: (0.9,0.98)
+  adam_eps: 1e-06
+
+lr_scheduler:
+  _name: polynomial_decay
+  warmup_updates: 10000
+
+optimization:
+  clip_norm: 0
+  lr: [0.0002]
+  max_update: 2000000
+  update_freq: [2]  # Assuming 64 GPUs
+
+model:
+  _name: transformer_t5_base_rel_pos_encoder
+  max_positions: 1024
