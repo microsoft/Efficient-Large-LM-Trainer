@@ -1,14 +1,58 @@
-# Project
+# Efficient Large LM Trainer
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+This repository contains pretraining pipeline of sequence-to-sequence language models.
 
-As the maintainer of this project, please make a few updates:
+We provide scripts based on the [Fairseq](https://github.com/facebookresearch/fairseq) library and PyTorch.
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+## T5 Pretraining
+
+### Requirements
+
+This codebase requires CUDA 11.3+, Python 3.8+, and PyTorch 1.10.2+. For best compatibility, you can run the following script in a clean Python 3.8 virtual environment:
+
+```bash
+python -m pip install torch==1.10.2+cu113 torchaudio==0.10.2+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html
+```
+
+Another dependency is [Fairseq](https://github.com/facebookresearch/fairseq). 
+
+```bash
+git clone git@github.com:facebookresearch/fairseq
+cd fairseq
+git checkout 11b2830d29aed8043e5011d64e14004347a08b50
+python -m pip install -e .
+```
+
+### Data
+
+Please refer to
+
+### T5 Pretraining
+
+The following pretraining script for pretraining T5-Base on the Wikibook dataset is tested on a node of 8 NVIDIA A100 40GB GPUs:
+
+```bash
+export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
+fairseq-hydra-train -m --config-dir examples/t5/config/pretraining \
+--config-name t5_base_8gpus \
+common.user_dir=$(pwd)/efficent_large_lm_trainer \
+task.data=/path/to/wikibook_data \
+hydra.sweep.dir=/path/to/outputs
+```
+
+Pretraining on a single node will take ~136 hours. We recommend pretraining on 8 nodes. Assuming the `NODE_RANK` environment variable is set to _i_ on the _i_-th node, here is the pretraining script on 8 nodes with 8 GPUs each:
+
+```bash
+export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
+fairseq-hydra-train -m --config-dir examples/t5/config/pretraining \
+--config-name t5_base_64gpus \
+common.user_dir=$(pwd)/efficent_large_lm_trainer \
+task.data=/path/to/wikibook_data \
+distributed_training.distributed_world_size=64 \
+distributed_training.distributed_rank=$((NODE_RANK * 8)) \
+distributed_training.distributed_init_method="tcp://${MASTER_IP}:${MASTER_PORT}" \
+hydra.sweep.dir=/path/to/outputs
+```
 
 ## Contributing
 
