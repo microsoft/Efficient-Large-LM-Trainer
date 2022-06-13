@@ -23,9 +23,9 @@ git checkout 11b2830d29aed8043e5011d64e14004347a08b50
 python -m pip install -e .
 ```
 
-### Data
+### Data Preprocessing
 
-Please refer to
+Please refer to [Fairseq](https://github.com/facebookresearch/fairseq/blob/main/examples/roberta/README.pretraining.md).
 
 ### T5 Pretraining
 
@@ -53,6 +53,12 @@ distributed_training.distributed_rank=$((NODE_RANK * 8)) \
 distributed_training.distributed_init_method="tcp://${MASTER_IP}:${MASTER_PORT}" \
 hydra.sweep.dir=/path/to/outputs
 ```
+### Contact Information
+
+For personal communication related to this package, please contact Linyuan Gong (`gly@berkeley.edu`), Chenyan Xiong (`cxiong@microsoft.com`)  and Xiaodong Liu (`xiaodl@microsoft.com`).
+
+## Notes and Acknowledgments
+FairSeq: https://github.com/pytorch/fairseq
 
 ## Contributing
 
