@@ -19,7 +19,6 @@ from fairseq.data import (
     NumelDataset,
     NumSamplesDataset,
     PrependTokenDataset,
-    RightPadDataset,
     SortDataset,
     TokenBlockDataset,
     data_utils,
@@ -31,6 +30,7 @@ from fairseq.tasks.language_modeling import SAMPLE_BREAK_MODE_CHOICES, SHORTEN_M
 
 from ..data import (
     T5Dataset,
+    RightPadDataset,
     PadShiftDataset
 )
 
