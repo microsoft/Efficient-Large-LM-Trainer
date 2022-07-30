@@ -1,6 +1,4 @@
-from fairseq.data import data_utils
-
-from . import BaseWrapperDataset
+from fairseq.data import BaseWrapperDataset, data_utils
 
 
 class PadDataset(BaseWrapperDataset):
