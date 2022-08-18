@@ -49,14 +49,6 @@ class EncDecBaseConfig(FairseqDataclass):
     layers_to_keep: Optional[List[int]] = field(
         default=None, metadata={"help": "which layers to *keep* when pruning"}
     )
-
-    xformers_att_config: Optional[str] = field(
-        default=None,
-        metadata={
-            "help": "config for xFormers attention, defined in xformers.components.attention.AttentionConfig"
-        },
-    )
-
     rel_pos: bool = field(default=False, metadata={"help": "Add relative positional embedding"})
     rel_pos_bins: int = field(default=32, metadata={"help": "Number of bins for relative positional embedding"})
     rel_pos_max_dist: int = field(default=128, metadata={"help": "Maximum distance in relative positional embedding"})
