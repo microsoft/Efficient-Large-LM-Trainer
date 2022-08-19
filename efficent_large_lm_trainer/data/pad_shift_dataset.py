@@ -18,5 +18,6 @@ class PadShiftDataset(BaseWrapperDataset):
             self.pad_idx,
             eos_idx=self.start_idx,
             left_pad=False,
-            move_eos_to_beginning=True
+            move_eos_to_beginning=True,
+            pad_to_multiple=8,
         )
