@@ -1,2 +1,2 @@
-torch==1.10.2+cu113
+torch==2.2.0
 torchaudio==0.10.2+cu113
